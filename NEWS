@@ -1,0 +1,281 @@
+GNOME Mahjongg 3.32.0
+=====================
+* Translation updates
+
+GNOME Mahjongg 3.31.92
+======================
+* Development release
+* Localize date column of score list (Paul)
+* Translation updates
+
+Contributors:
+ Paul Hebble
+
+GNOME Mahjongg 3.31.90
+======================
+* Development release
+* Validate the AppStream metadata and .desktop file as build tests (Bilal)
+* Miscellaneous cleanup (Bilal & Jeremy)
+
+Contributors:
+ Jeremy Bicha, Bilal Elmoussaoui
+
+GNOME Mahjongg 3.31.4
+=====================
+* Development release
+* Consistently use org.gnome.Mahjongg as app ID
+  Note that this renames the icons, .desktop, and
+  AppStream metadata (Bilal)
+* Fix pause button when clicking on game to unpause (Elnee)
+* Miscellaneous improvements (Andre, Jeremy)
+* Translation updates
+
+Contributors:
+ Jeremy Bicha, Bilal ELmoussaoui, Andre Klapper, Elnee
+
+GNOME Mahjongg 3.31.3
+=====================
+* Development release
+* Switch from autotools to meson (Robert A.)
+* Follow GNOME 3.32 app menu recommendations (Robert A.)
+* Add Keyboard Shortcuts overlay (Jeremy)
+* Hide Keyboard Shortcuts section in app help (Jeremy)
+* Add Flatpak manifest (Jiri)
+* Stop using intltool (Robert R.)
+* Miscellaneous improvements (Anders, Andre, Carlos, Piotr)
+
+Contributors:
+ Robert Ancell, Jeremy Bicha, Piotr Drąg, Jiri Eischmann,
+ Anders Jonsson, Andre Klapper, Robert Roth, Carlos Soriano
+
+GNOME Mahjongg 3.22.0
+=====================
+
+* Translation Updates
+
+GNOME Mahjongg 3.21.90
+======================
+
+* Simplify style-checker enabling code(Sahil Sareen)
+* Fix style-checker with new libgnome-games-support(Sahil Sareen)
+* Translation Updates
+
+GNOME Mahjongg 3.21.2
+======================
+
+* Translation Updates (Occitan, Friulian, Portuguese, zh_CN)
+* Added educational tileset (by Rossano Rossi)
+
+GNOME Mahjongg 3.20.0
+======================
+
+* Translation Updates (Hungarian)
+
+GNOME Mahjongg 3.19.92
+======================
+
+* Translation Updates (Occitan)
+
+GNOME Mahjongg 3.19.90
+======================
+
+* Translation Updates (Bulgarian, Swedish, Danish, Lithuanian, German, Occitan, Friulian, German, Turkish, Portuguese)
+* Stop using deprecated gnome-common (Sahil Sareen)
+
+GNOME Mahjongg 3.18.0
+=====================
+
+* Translation Updates (Kazakh, Swedish, Latvian, Greek)
+
+GNOME Mahjongg 3.17.92
+=====================
+
+* Fixed event propagation for gestures (Carlos Garnacho)
+
+GNOME Mahjongg 3.17.91
+=====================
+
+* Translation Updates (Chinese (Taiwan), German, Occitan, Spanish, breton, Brazilian Portuguese, Hungarian, Basque, Norwegian bokmål, Czech, Portuguese, Polish)
+
+GNOME Mahjongg 3.16.0
+=====================
+
+* Translation Updates (French)
+
+GNOME Mahjongg 3.15.92
+=====================
+
+* Translation Updates (Swedish, Danish, Lithuanian, Hungarian, Korean, Chinese (Taiwan), French, Ukrainian, Slovak, Greek, Galician, Finnish, Slovenian, Italian, Polish, Bosnian, Serbian)
+
+GNOME Mahjongg 3.15.90
+=====================
+
+* Translation Updates (Hungarian, Spanish, Swedish, Basque, Russian, Norwegian bokmål, Czech, Slovenian, Turkish)
+
+GNOME Mahjongg 3.15.2
+=====================
+
+* Translation Updates (breton, Portuguese, Norwegian bokmål, Czech, Italian, Latvian, Finnish, Greek)
+* Increased non gnome-shell-support (Robert Ancell, Michael Catanzaro)
+
+GNOME Mahjongg 3.14.0
+=====================
+
+* Translation Updates (Danish, Hungarian, German, Slovak, Serbian)
+
+GNOME Mahjongg 3.13.92
+=====================
+
+* Translation Updates (Swedish, Indonesian, Lithuanian, Hungarian, Korean, Brazilian Portuguese, Galician, Norwegian bokmål, Polish, Finnish, Russian)
+
+GNOME Mahjongg 3.13.91
+=====================
+
+* Translation Updates (French, Spanish, Norwegian bokmål, Czech, Greek)
+* Fixed shuffling
+
+GNOME Mahjongg 3.13.90
+=====================
+
+* Translation Updates (Lithuanian, Hungarian, Catalan (Valencian), German, Spanish, Catalan, Basque, Norwegian bokmål, Greek, Traditional Chinese)
+* Removed empty page in help (Michael Catanzaro)
+* doap changes
+* various bugfixes and little improvements
+
+GNOME Mahjongg 3.13.4
+=====================
+* added version command line option (Arnaud Bonatti)
+* Translation Updates (Lithuanian, Spanish, Belarusian, Greek, Russian)
+* Don't show HeaderBar/app menu on systems that don't support it (Robert Ancell)
+* Appdata Changes, general fixup (Arnaud Bonatti, Michael Catanzaro)
+* Dependency Changes (GTK+ 3.13.2, Vala 0.24)
+* Updated Smooth Tileset from Jim Evins
+
+GNOME Mahjongg 3.13.1
+=====================
+* Translation Updates (Swedish, Basque, Czech, Slovenian, Italian, Greek)
+* Documentation Updates (Andre Klapper)
+* Fix critical warning in Game.timeout_cb, Ensure game is unpaused after Restart Game (Michael Catanzaro)
+
+GNOME Mahjongg 3.12.0
+=====================
+* Translation Updates (Indonesian, Danish, Hungarian, slovak, Catalan, Brazilian Portuguese, Portuguese, Russian, Serbian)
+
+GNOME Mahjongg 3.11.92
+=====================
+* Changed default window size (Michael Catanzaro)
+* Updated help to reflect ui changes (Rashi Aswani)
+* Translation Updates (Korean, Traditional Chinese, French, Ukrainian, Polish, Latvian, Finnish, Hebrew)
+
+GNOME Mahjongg 3.11.91
+=====================
+* Fixed several issues with resetting and restarting the game (Michael Catanzaro)
+* Updated help to include bonus tiles (Rashi Aswani)
+* Translation Updates (Galician, Spanish, Czech, Chinese, Norwegian bokmål, Lithuanian)
+
+GNOME Mahjongg 3.11.90
+=====================
+
+* Added shuffle when no more moves are left
+* Removed toolbar in favor of GtkHeaderBar (Alex Muñoz)
+
+GNOME Mahjongg 3.11.5
+=====================
+
+* Translation Updates (Czech, Traditional Chinese, Norwegian bokmål)
+
+GNOME Mahjongg 3.11.4
+=====================
+
+* Flash any two matching tiles if the selected tile has no match.
+* Fix blue flower tiles in smooth tile set
+* Remove some older tilesets
+* update website in about dialog
+* Translation Updates (Brazilian, Czech, Galician, Greek)
+
+GNOME Mahjongg 3.11.3
+=====================
+
+* Scores dialog: scroll to new high score
+* Split ScoreDialog into its own file
+* About dialog: remove period from fragment
+* About dialog: use GtkLicense
+* appdata: update homepage
+* app menu: standardize Help/About/Quit
+* Updated POTFILES.in and POTFILES.skip
+* Translation updates (Spanish, Greek, Chinese simplified)
+
+GNOME Mahjongg 3.11.2
+=====================
+
+* build: use pkg-config to find glib-compile-resources, add gio-2.0 to PKG_CHECK_MODULES
+* Sort scores by duration of the game
+* Check for *-validate before using them, run autoupdate
+* help: Add Overpass map
+* Translation updates (Spanish, Greek)
+
+GNOME Mahjongg 3.11.1
+=====================
+
+Dependencies: intltool >= 0.50
+
+* Add Overpass map by Wa
+* Remove deprecated function usage
+* Help: restore note on using the Pause key
+* Appdata is now translatable
+* Translation updates
+
+Contributors: Robert Ancell, Michael Catanzaro, Wa
+
+GNOME Mahjongg 3.9.92
+=====================
+
+* Fix Redo sometimes removing too many pieces
+* Fix map label on scores dialog
+* Add an appdata file
+* Translation updates
+
+GNOME Mahjongg 3.9.90
+=====================
+
+* Fix bug where the pause button could incorrectly display a "play" icon
+* Fix name of application menu when not launched by GNOME Shell
+* Fix two broken links in user help
+* App menu now uses a UI file and is installed into a gresource
+* Translation updates
+
+gnome-mahjongg 3.8.0
+====================
+
+ * Translation updates
+
+gnome-mahjongg 3.7.92
+=====================
+
+ * Renamed desktop file back to mahjongg.desktop
+ * Themes from gnome-games-extra-data added
+ * High contrast icons added
+ * Translation updates
+
+gnome-mahjongg 3.7.90
+=====================
+
+ * Translation updates
+
+gnome-mahjongg 3.7.5
+====================
+
+ * Added keywords to .desktop file
+ * Translation updates
+
+gnome-mahjongg 3.7.4
+====================
+
+ * Translations
+
+Contributions by: Piotr Drąg
+
+gnome-mahjongg 3.7.0
+====================
+
+First release split from gnome-games
