@@ -4,7 +4,7 @@
 #
 Name     : gnome-mahjongg
 Version  : 3.38.3
-Release  : 11
+Release  : 12
 URL      : https://download.gnome.org/sources/gnome-mahjongg/3.38/gnome-mahjongg-3.38.3.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-mahjongg/3.38/gnome-mahjongg-3.38.3.tar.xz
 Summary  : No detailed summary available
