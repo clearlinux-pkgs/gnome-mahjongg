@@ -1,0 +1,4 @@
+3.38.3
+appstream-glib
+librsvg-dev
+pkgconfig(librsvg-2.0)

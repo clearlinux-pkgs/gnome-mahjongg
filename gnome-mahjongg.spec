@@ -4,7 +4,7 @@
 #
 Name     : gnome-mahjongg
 Version  : 3.38.3
-Release  : 13
+Release  : 14
 URL      : https://download.gnome.org/sources/gnome-mahjongg/3.38/gnome-mahjongg-3.38.3.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-mahjongg/3.38/gnome-mahjongg-3.38.3.tar.xz
 Summary  : No detailed summary available
@@ -86,23 +86,23 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1604441111
+export SOURCE_DATE_EPOCH=1664149176
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Dcompile-schemas=disabled \
 -Dupdate-icon-cache=disabled  builddir
 ninja -v -C builddir
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/gnome-mahjongg
-cp %{_builddir}/gnome-mahjongg-3.38.3/COPYING %{buildroot}/usr/share/package-licenses/gnome-mahjongg/4cc77b90af91e615a64ae04893fdffa7939db84c
-cp %{_builddir}/gnome-mahjongg-3.38.3/help/C/license.page %{buildroot}/usr/share/package-licenses/gnome-mahjongg/99449fd3e6417f1f32dbe2a5b252880badb25704
+cp %{_builddir}/gnome-mahjongg-%{version}/COPYING %{buildroot}/usr/share/package-licenses/gnome-mahjongg/4cc77b90af91e615a64ae04893fdffa7939db84c || :
+cp %{_builddir}/gnome-mahjongg-%{version}/help/C/license.page %{buildroot}/usr/share/package-licenses/gnome-mahjongg/99449fd3e6417f1f32dbe2a5b252880badb25704 || :
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang gnome-mahjongg
 
