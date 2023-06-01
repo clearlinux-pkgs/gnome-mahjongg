@@ -4,10 +4,10 @@
 # Using build pattern: meson
 #
 Name     : gnome-mahjongg
-Version  : 3.38.3
-Release  : 15
-URL      : https://download.gnome.org/sources/gnome-mahjongg/3.38/gnome-mahjongg-3.38.3.tar.xz
-Source0  : https://download.gnome.org/sources/gnome-mahjongg/3.38/gnome-mahjongg-3.38.3.tar.xz
+Version  : 3.40.0
+Release  : 16
+URL      : https://download.gnome.org/sources/gnome-mahjongg/3.40/gnome-mahjongg-3.40.0.tar.xz
+Source0  : https://download.gnome.org/sources/gnome-mahjongg/3.40/gnome-mahjongg-3.40.0.tar.xz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : CC-BY-SA-3.0 GPL-2.0
@@ -20,6 +20,7 @@ BuildRequires : appstream-glib
 BuildRequires : buildreq-gnome
 BuildRequires : buildreq-meson
 BuildRequires : librsvg-dev
+BuildRequires : pkgconfig(libadwaita-1)
 BuildRequires : pkgconfig(librsvg-2.0)
 # Suppress stripping binaries
 %define __strip /bin/true
@@ -82,47 +83,56 @@ man components for the gnome-mahjongg package.
 
 
 %prep
-%setup -q -n gnome-mahjongg-3.38.3
-cd %{_builddir}/gnome-mahjongg-3.38.3
+%setup -q -n gnome-mahjongg-3.40.0
+cd %{_builddir}/gnome-mahjongg-3.40.0
+pushd ..
+cp -a gnome-mahjongg-3.40.0 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1680029320
+export SOURCE_DATE_EPOCH=1685659625
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Dcompile-schemas=disabled \
--Dupdate-icon-cache=disabled  builddir
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddir
 ninja -v -C builddir
+CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 -O3" CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 " LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddiravx2
+ninja -v -C builddiravx2
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/gnome-mahjongg
 cp %{_builddir}/gnome-mahjongg-%{version}/COPYING %{buildroot}/usr/share/package-licenses/gnome-mahjongg/4cc77b90af91e615a64ae04893fdffa7939db84c || :
 cp %{_builddir}/gnome-mahjongg-%{version}/help/C/license.page %{buildroot}/usr/share/package-licenses/gnome-mahjongg/99449fd3e6417f1f32dbe2a5b252880badb25704 || :
+DESTDIR=%{buildroot}-v3 ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang gnome-mahjongg
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
+/V3/usr/bin/gnome-mahjongg
 /usr/bin/gnome-mahjongg
 
 %files data
 %defattr(-,root,root,-)
 /usr/share/applications/org.gnome.Mahjongg.desktop
+/usr/share/dbus-1/services/org.gnome.Mahjongg.service
 /usr/share/glib-2.0/schemas/org.gnome.Mahjongg.gschema.xml
 /usr/share/gnome-mahjongg/maps/mahjongg.map
 /usr/share/gnome-mahjongg/themes/edu_kang_xi.png
+/usr/share/gnome-mahjongg/themes/maya.png
 /usr/share/gnome-mahjongg/themes/postmodern.svg
 /usr/share/gnome-mahjongg/themes/smooth.png
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Mahjongg.svg
@@ -148,9 +158,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/C/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/C/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/C/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/C/gnome-mahjongg/figures/logo.png
-/usr/share/help/C/gnome-mahjongg/figures/logo32.png
 /usr/share/help/C/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/C/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/C/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/C/gnome-mahjongg/gameplay.page
 /usr/share/help/C/gnome-mahjongg/hints.page
@@ -181,9 +190,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/ca/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/ca/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/ca/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/ca/gnome-mahjongg/figures/logo.png
-/usr/share/help/ca/gnome-mahjongg/figures/logo32.png
 /usr/share/help/ca/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/ca/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/ca/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/ca/gnome-mahjongg/gameplay.page
 /usr/share/help/ca/gnome-mahjongg/hints.page
@@ -214,9 +222,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/cs/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/cs/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/cs/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/cs/gnome-mahjongg/figures/logo.png
-/usr/share/help/cs/gnome-mahjongg/figures/logo32.png
 /usr/share/help/cs/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/cs/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/cs/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/cs/gnome-mahjongg/gameplay.page
 /usr/share/help/cs/gnome-mahjongg/hints.page
@@ -247,9 +254,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/da/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/da/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/da/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/da/gnome-mahjongg/figures/logo.png
-/usr/share/help/da/gnome-mahjongg/figures/logo32.png
 /usr/share/help/da/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/da/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/da/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/da/gnome-mahjongg/gameplay.page
 /usr/share/help/da/gnome-mahjongg/hints.page
@@ -280,9 +286,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/de/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/de/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/de/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/de/gnome-mahjongg/figures/logo.png
-/usr/share/help/de/gnome-mahjongg/figures/logo32.png
 /usr/share/help/de/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/de/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/de/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/de/gnome-mahjongg/gameplay.page
 /usr/share/help/de/gnome-mahjongg/hints.page
@@ -313,9 +318,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/el/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/el/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/el/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/el/gnome-mahjongg/figures/logo.png
-/usr/share/help/el/gnome-mahjongg/figures/logo32.png
 /usr/share/help/el/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/el/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/el/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/el/gnome-mahjongg/gameplay.page
 /usr/share/help/el/gnome-mahjongg/hints.page
@@ -346,9 +350,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/es/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/es/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/es/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/es/gnome-mahjongg/figures/logo.png
-/usr/share/help/es/gnome-mahjongg/figures/logo32.png
 /usr/share/help/es/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/es/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/es/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/es/gnome-mahjongg/gameplay.page
 /usr/share/help/es/gnome-mahjongg/hints.page
@@ -362,6 +365,38 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/es/gnome-mahjongg/scoring.page
 /usr/share/help/es/gnome-mahjongg/strategy.page
 /usr/share/help/es/gnome-mahjongg/translate.page
+/usr/share/help/eu/gnome-mahjongg/bonustiles.page
+/usr/share/help/eu/gnome-mahjongg/bug-filing.page
+/usr/share/help/eu/gnome-mahjongg/develop.page
+/usr/share/help/eu/gnome-mahjongg/documentation.page
+/usr/share/help/eu/gnome-mahjongg/figures/black-symbol.png
+/usr/share/help/eu/gnome-mahjongg/figures/hints-video.ogv
+/usr/share/help/eu/gnome-mahjongg/figures/keyboard-key-pause.svg
+/usr/share/help/eu/gnome-mahjongg/figures/layout-bridges.png
+/usr/share/help/eu/gnome-mahjongg/figures/layout-cloud.png
+/usr/share/help/eu/gnome-mahjongg/figures/layout-conf-cross.png
+/usr/share/help/eu/gnome-mahjongg/figures/layout-difficult.png
+/usr/share/help/eu/gnome-mahjongg/figures/layout-easy.png
+/usr/share/help/eu/gnome-mahjongg/figures/layout-overpass.png
+/usr/share/help/eu/gnome-mahjongg/figures/layout-pyramid-walls.png
+/usr/share/help/eu/gnome-mahjongg/figures/layout-red-dragon.png
+/usr/share/help/eu/gnome-mahjongg/figures/layout-tic-tac-toe.png
+/usr/share/help/eu/gnome-mahjongg/figures/layout-ziggurat.png
+/usr/share/help/eu/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/eu/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
+/usr/share/help/eu/gnome-mahjongg/figures/yellow-symbol.png
+/usr/share/help/eu/gnome-mahjongg/gameplay.page
+/usr/share/help/eu/gnome-mahjongg/hints.page
+/usr/share/help/eu/gnome-mahjongg/index.page
+/usr/share/help/eu/gnome-mahjongg/legal.xml
+/usr/share/help/eu/gnome-mahjongg/license.page
+/usr/share/help/eu/gnome-mahjongg/map.page
+/usr/share/help/eu/gnome-mahjongg/moves.page
+/usr/share/help/eu/gnome-mahjongg/pause.page
+/usr/share/help/eu/gnome-mahjongg/rules.page
+/usr/share/help/eu/gnome-mahjongg/scoring.page
+/usr/share/help/eu/gnome-mahjongg/strategy.page
+/usr/share/help/eu/gnome-mahjongg/translate.page
 /usr/share/help/fr/gnome-mahjongg/bonustiles.page
 /usr/share/help/fr/gnome-mahjongg/bug-filing.page
 /usr/share/help/fr/gnome-mahjongg/develop.page
@@ -379,9 +414,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/fr/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/fr/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/fr/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/fr/gnome-mahjongg/figures/logo.png
-/usr/share/help/fr/gnome-mahjongg/figures/logo32.png
 /usr/share/help/fr/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/fr/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/fr/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/fr/gnome-mahjongg/gameplay.page
 /usr/share/help/fr/gnome-mahjongg/hints.page
@@ -412,9 +446,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/hu/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/hu/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/hu/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/hu/gnome-mahjongg/figures/logo.png
-/usr/share/help/hu/gnome-mahjongg/figures/logo32.png
 /usr/share/help/hu/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/hu/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/hu/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/hu/gnome-mahjongg/gameplay.page
 /usr/share/help/hu/gnome-mahjongg/hints.page
@@ -445,9 +478,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/id/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/id/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/id/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/id/gnome-mahjongg/figures/logo.png
-/usr/share/help/id/gnome-mahjongg/figures/logo32.png
 /usr/share/help/id/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/id/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/id/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/id/gnome-mahjongg/gameplay.page
 /usr/share/help/id/gnome-mahjongg/hints.page
@@ -478,9 +510,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/ko/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/ko/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/ko/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/ko/gnome-mahjongg/figures/logo.png
-/usr/share/help/ko/gnome-mahjongg/figures/logo32.png
 /usr/share/help/ko/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/ko/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/ko/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/ko/gnome-mahjongg/gameplay.page
 /usr/share/help/ko/gnome-mahjongg/hints.page
@@ -511,9 +542,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/pl/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/pl/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/pl/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/pl/gnome-mahjongg/figures/logo.png
-/usr/share/help/pl/gnome-mahjongg/figures/logo32.png
 /usr/share/help/pl/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/pl/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/pl/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/pl/gnome-mahjongg/gameplay.page
 /usr/share/help/pl/gnome-mahjongg/hints.page
@@ -527,6 +557,38 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/pl/gnome-mahjongg/scoring.page
 /usr/share/help/pl/gnome-mahjongg/strategy.page
 /usr/share/help/pl/gnome-mahjongg/translate.page
+/usr/share/help/pt_BR/gnome-mahjongg/bonustiles.page
+/usr/share/help/pt_BR/gnome-mahjongg/bug-filing.page
+/usr/share/help/pt_BR/gnome-mahjongg/develop.page
+/usr/share/help/pt_BR/gnome-mahjongg/documentation.page
+/usr/share/help/pt_BR/gnome-mahjongg/figures/black-symbol.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/hints-video.ogv
+/usr/share/help/pt_BR/gnome-mahjongg/figures/keyboard-key-pause.svg
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-bridges.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-cloud.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-conf-cross.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-difficult.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-easy.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-overpass.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-pyramid-walls.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-red-dragon.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-tic-tac-toe.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/layout-ziggurat.png
+/usr/share/help/pt_BR/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/pt_BR/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
+/usr/share/help/pt_BR/gnome-mahjongg/figures/yellow-symbol.png
+/usr/share/help/pt_BR/gnome-mahjongg/gameplay.page
+/usr/share/help/pt_BR/gnome-mahjongg/hints.page
+/usr/share/help/pt_BR/gnome-mahjongg/index.page
+/usr/share/help/pt_BR/gnome-mahjongg/legal.xml
+/usr/share/help/pt_BR/gnome-mahjongg/license.page
+/usr/share/help/pt_BR/gnome-mahjongg/map.page
+/usr/share/help/pt_BR/gnome-mahjongg/moves.page
+/usr/share/help/pt_BR/gnome-mahjongg/pause.page
+/usr/share/help/pt_BR/gnome-mahjongg/rules.page
+/usr/share/help/pt_BR/gnome-mahjongg/scoring.page
+/usr/share/help/pt_BR/gnome-mahjongg/strategy.page
+/usr/share/help/pt_BR/gnome-mahjongg/translate.page
 /usr/share/help/ro/gnome-mahjongg/bonustiles.page
 /usr/share/help/ro/gnome-mahjongg/bug-filing.page
 /usr/share/help/ro/gnome-mahjongg/develop.page
@@ -544,9 +606,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/ro/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/ro/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/ro/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/ro/gnome-mahjongg/figures/logo.png
-/usr/share/help/ro/gnome-mahjongg/figures/logo32.png
 /usr/share/help/ro/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/ro/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/ro/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/ro/gnome-mahjongg/gameplay.page
 /usr/share/help/ro/gnome-mahjongg/hints.page
@@ -560,6 +621,38 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/ro/gnome-mahjongg/scoring.page
 /usr/share/help/ro/gnome-mahjongg/strategy.page
 /usr/share/help/ro/gnome-mahjongg/translate.page
+/usr/share/help/ru/gnome-mahjongg/bonustiles.page
+/usr/share/help/ru/gnome-mahjongg/bug-filing.page
+/usr/share/help/ru/gnome-mahjongg/develop.page
+/usr/share/help/ru/gnome-mahjongg/documentation.page
+/usr/share/help/ru/gnome-mahjongg/figures/black-symbol.png
+/usr/share/help/ru/gnome-mahjongg/figures/hints-video.ogv
+/usr/share/help/ru/gnome-mahjongg/figures/keyboard-key-pause.svg
+/usr/share/help/ru/gnome-mahjongg/figures/layout-bridges.png
+/usr/share/help/ru/gnome-mahjongg/figures/layout-cloud.png
+/usr/share/help/ru/gnome-mahjongg/figures/layout-conf-cross.png
+/usr/share/help/ru/gnome-mahjongg/figures/layout-difficult.png
+/usr/share/help/ru/gnome-mahjongg/figures/layout-easy.png
+/usr/share/help/ru/gnome-mahjongg/figures/layout-overpass.png
+/usr/share/help/ru/gnome-mahjongg/figures/layout-pyramid-walls.png
+/usr/share/help/ru/gnome-mahjongg/figures/layout-red-dragon.png
+/usr/share/help/ru/gnome-mahjongg/figures/layout-tic-tac-toe.png
+/usr/share/help/ru/gnome-mahjongg/figures/layout-ziggurat.png
+/usr/share/help/ru/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/ru/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
+/usr/share/help/ru/gnome-mahjongg/figures/yellow-symbol.png
+/usr/share/help/ru/gnome-mahjongg/gameplay.page
+/usr/share/help/ru/gnome-mahjongg/hints.page
+/usr/share/help/ru/gnome-mahjongg/index.page
+/usr/share/help/ru/gnome-mahjongg/legal.xml
+/usr/share/help/ru/gnome-mahjongg/license.page
+/usr/share/help/ru/gnome-mahjongg/map.page
+/usr/share/help/ru/gnome-mahjongg/moves.page
+/usr/share/help/ru/gnome-mahjongg/pause.page
+/usr/share/help/ru/gnome-mahjongg/rules.page
+/usr/share/help/ru/gnome-mahjongg/scoring.page
+/usr/share/help/ru/gnome-mahjongg/strategy.page
+/usr/share/help/ru/gnome-mahjongg/translate.page
 /usr/share/help/sv/gnome-mahjongg/bonustiles.page
 /usr/share/help/sv/gnome-mahjongg/bug-filing.page
 /usr/share/help/sv/gnome-mahjongg/develop.page
@@ -577,9 +670,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/sv/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/sv/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/sv/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/sv/gnome-mahjongg/figures/logo.png
-/usr/share/help/sv/gnome-mahjongg/figures/logo32.png
 /usr/share/help/sv/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/sv/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/sv/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/sv/gnome-mahjongg/gameplay.page
 /usr/share/help/sv/gnome-mahjongg/hints.page
@@ -610,9 +702,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/help/uk/gnome-mahjongg/figures/layout-red-dragon.png
 /usr/share/help/uk/gnome-mahjongg/figures/layout-tic-tac-toe.png
 /usr/share/help/uk/gnome-mahjongg/figures/layout-ziggurat.png
-/usr/share/help/uk/gnome-mahjongg/figures/logo.png
-/usr/share/help/uk/gnome-mahjongg/figures/logo32.png
 /usr/share/help/uk/gnome-mahjongg/figures/mahjongg-video.ogv
+/usr/share/help/uk/gnome-mahjongg/figures/org.gnome.Mahjongg.svg
 /usr/share/help/uk/gnome-mahjongg/figures/yellow-symbol.png
 /usr/share/help/uk/gnome-mahjongg/gameplay.page
 /usr/share/help/uk/gnome-mahjongg/hints.page

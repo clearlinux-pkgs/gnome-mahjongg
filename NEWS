@@ -1,21 +1,12 @@
-GNOME Mahjongg 3.38.3
+GNOME Mahjongg 3.40.0
 =====================
 
-Enable (by default) regeneration of schema and icons.
-Also, hide two unimplemented shortcuts from the help.
-
-GNOME Mahjongg 3.38.2
-=====================
-
-Fixed a regression.
-
-Translation updated:
-  Hebrew: Yosef Or Boczko
-
-GNOME Mahjongg 3.38.1
-=====================
-
-Fast fix for hints.
+* Port to GTK4 and libadwaita
+* Build fixes
+* Fix hints [#22]
+* Translate scores dialog [#13]
+* help-overlay.ui: Remove ctrl+f1 shortcut
+* Translation updates
 
 GNOME Mahjongg 3.38.0
 =====================
