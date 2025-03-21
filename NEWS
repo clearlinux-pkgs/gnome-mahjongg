@@ -1,7 +1,30 @@
+48.0
+====
+
+* Translation updates
+
+48.rc
+=====
+
+* On double-click, auto-play the end of the game if all tiles are unblocked (K Davis)
+* Only rotate layout on startup when random rotation is enabled
+* Avoid unnecessary loops for faster tile matching
+* Swap placement of Quit and Continue buttons
+* Add window title for completed game
+* Bundle icons not included with GTK
+* Translation updates
+
 47.2
 ====
 
 * Fixed a regression making games needlessly difficult to solve
+
+48.beta.1
+=========
+
+* Fix compilation on some systems (cast sort callbacks to CompareDataFunc)
+* Select new theme name after theme name migration
+* Stop rounding 'time elapsed' value
 
 47.1
 ====
@@ -12,6 +35,30 @@
 * Stop leaking game instances
 * Fix a memory leak in the Scores dialog
 * Stop using deprecated APIs
+* Translation updates
+
+48.beta
+=======
+
+* Implement column sorting in Scores dialog
+* Stop leaking game instances
+* Code cleanups
+* Translation updates
+
+48.alpha
+========
+
+* Add sequential and random layout rotation modes (K Davis)
+* Add animation when starting a new game and pausing a game
+* Add Ctrl-R keyboard shortcut for restarting game
+* Improve rendering on high resolution displays
+* Render tiles using the GPU instead of CPU (port to Gtk.Snapshot)
+* Smaller spacing around the board on mobile screens
+* Various optimizations for game initialization and drawing
+* Tweak background colors
+* Fix a memory leak in the Scores dialog
+* Stop using deprecated APIs
+* Add SPDX license identifiers to all files
 * Translation updates
 
 47.0

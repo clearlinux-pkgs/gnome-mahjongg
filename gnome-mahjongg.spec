@@ -6,13 +6,13 @@
 # autospec commit: fbbd4e3
 #
 Name     : gnome-mahjongg
-Version  : 47.2
-Release  : 19
-URL      : https://download.gnome.org/sources/gnome-mahjongg/47/gnome-mahjongg-47.2.tar.xz
-Source0  : https://download.gnome.org/sources/gnome-mahjongg/47/gnome-mahjongg-47.2.tar.xz
+Version  : 48.0
+Release  : 20
+URL      : https://download.gnome.org/sources/gnome-mahjongg/48/gnome-mahjongg-48.0.tar.xz
+Source0  : https://download.gnome.org/sources/gnome-mahjongg/48/gnome-mahjongg-48.0.tar.xz
 Summary  : No detailed summary available
 Group    : Development/Tools
-License  : CC-BY-SA-3.0 GPL-2.0
+License  : CC-BY-SA-3.0 CC0-1.0 GPL-2.0
 Requires: gnome-mahjongg-bin = %{version}-%{release}
 Requires: gnome-mahjongg-data = %{version}-%{release}
 Requires: gnome-mahjongg-license = %{version}-%{release}
@@ -28,6 +28,9 @@ BuildRequires : pkgconfig(librsvg-2.0)
 %define debug_package %{nil}
 
 %description
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+-->
 # Mahjongg
 Single-player tile-matching game, commonly known as Mahjong solitaire.
 
@@ -83,10 +86,10 @@ man components for the gnome-mahjongg package.
 
 
 %prep
-%setup -q -n gnome-mahjongg-47.2
-cd %{_builddir}/gnome-mahjongg-47.2
+%setup -q -n gnome-mahjongg-48.0
+cd %{_builddir}/gnome-mahjongg-48.0
 pushd ..
-cp -a gnome-mahjongg-47.2 buildavx2
+cp -a gnome-mahjongg-48.0 buildavx2
 popd
 
 %build
@@ -94,7 +97,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1740499546
+export SOURCE_DATE_EPOCH=1742587536
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -134,6 +137,9 @@ LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
 export GOAMD64=v2
 mkdir -p %{buildroot}/usr/share/package-licenses/gnome-mahjongg
 cp %{_builddir}/gnome-mahjongg-%{version}/COPYING %{buildroot}/usr/share/package-licenses/gnome-mahjongg/4cc77b90af91e615a64ae04893fdffa7939db84c || :
+cp %{_builddir}/gnome-mahjongg-%{version}/LICENSES/CC-BY-SA-3.0.txt %{buildroot}/usr/share/package-licenses/gnome-mahjongg/fb41626a3005c2b6e14b8b3f5d9d0b19b5faaa51 || :
+cp %{_builddir}/gnome-mahjongg-%{version}/LICENSES/CC0-1.0.txt %{buildroot}/usr/share/package-licenses/gnome-mahjongg/82da472f6d00dc5f0a651f33ebb320aa9c7b08d0 || :
+cp %{_builddir}/gnome-mahjongg-%{version}/LICENSES/GPL-2.0-or-later.txt %{buildroot}/usr/share/package-licenses/gnome-mahjongg/4cc77b90af91e615a64ae04893fdffa7939db84c || :
 cp %{_builddir}/gnome-mahjongg-%{version}/help/C/license.page %{buildroot}/usr/share/package-licenses/gnome-mahjongg/99449fd3e6417f1f32dbe2a5b252880badb25704 || :
 GOAMD64=v3
 DESTDIR=%{buildroot}-v3 ninja -C builddiravx2 install
@@ -156,9 +162,6 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/dbus-1/services/org.gnome.Mahjongg.service
 /usr/share/glib-2.0/schemas/org.gnome.Mahjongg.gschema.xml
 /usr/share/gnome-mahjongg/maps/mahjongg.map
-/usr/share/gnome-mahjongg/themes/educational.png
-/usr/share/gnome-mahjongg/themes/postmodern.svg
-/usr/share/gnome-mahjongg/themes/smooth.png
 /usr/share/icons/hicolor/scalable/apps/org.gnome.Mahjongg.svg
 /usr/share/icons/hicolor/symbolic/apps/org.gnome.Mahjongg-symbolic.svg
 /usr/share/metainfo/org.gnome.Mahjongg.metainfo.xml
@@ -403,7 +406,9 @@ DESTDIR=%{buildroot} ninja -C builddir install
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/gnome-mahjongg/4cc77b90af91e615a64ae04893fdffa7939db84c
+/usr/share/package-licenses/gnome-mahjongg/82da472f6d00dc5f0a651f33ebb320aa9c7b08d0
 /usr/share/package-licenses/gnome-mahjongg/99449fd3e6417f1f32dbe2a5b252880badb25704
+/usr/share/package-licenses/gnome-mahjongg/fb41626a3005c2b6e14b8b3f5d9d0b19b5faaa51
 
 %files man
 %defattr(0644,root,root,0755)
